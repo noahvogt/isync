@@ -90,6 +90,9 @@ typedef unsigned long ulong;
 
 #define EXE "mbsync"
 
+#define DEFAULT_ISYNC_CONFIG_DIR "isync/" EXE "rc"
+#define DEDAULT_XDG_CONFIG_DIR ".config"
+
 /* main.c */
 
 #define DEBUG_CRASH     0x01

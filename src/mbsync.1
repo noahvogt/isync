@@ -47,7 +47,6 @@ Multiple replicas of each mailbox can be maintained.
 .TP
 \fB-c\fR, \fB--config\fR \fIfile\fR
 Read configuration from \fIfile\fR.
-By default, the configuration is read from ~/.mbsyncrc.
 .TP
 \fB-a\fR, \fB--all\fR
 Select all configured channels. Any channel/group specifications on the command
@@ -802,9 +801,12 @@ There is no risk as long as the IMAP mailbox is accessed by only one client
 (including \fBmbsync\fR) at a time.
 .
 .SH FILES
-.TP
-.B ~/.mbsyncrc
-Default configuration file
+.P
+If the config file is not explicitly set with \fB-c\fR or \fB--config\fR,
+firstly \fB$XDG_CONFIG_HOME/isync/mbsyncrc\fR will be checked. If
+\fB$XDG_CONFIG_HOME\fR is not set or empty, \fB$HOME/.config/isync/mbsyncrc\fR
+will be tried. However when this file is empty, \fB~/.mbsyncrc\fR will be
+used instead.
 .TP
 .B ~/.mbsync/
 Directory containing synchronization state files

@@ -330,11 +330,30 @@ load_config( const char *where )
 	char path[_POSIX_PATH_MAX];
 	char buf[1024];
 
-	if (!where) {
+    const char *default_xdg_dir = "/" DEDAULT_XDG_CONFIG_DIR;
+    const char *default_isync_config_dir = "/" DEFAULT_ISYNC_CONFIG_DIR;
+
+    char* xdg_user_specified_dir;
+    char xdg_path_to_check[_POSIX_PATH_MAX] = "";
+
+    /* find out where to look for xdg compliant config file */
+    if ((xdg_user_specified_dir = getenv("XDG_CONFIG_HOME"))) {
+        strcat(xdg_path_to_check, xdg_user_specified_dir);
+        strcat(xdg_path_to_check, default_isync_config_dir);
+    } else {
+        strcat(xdg_path_to_check, Home);
+        strcat(xdg_path_to_check, default_xdg_dir);
+        strcat(xdg_path_to_check, default_isync_config_dir);
+    }
+
+	if (where) {
+		cfile.file = where;
+	} else if (access( xdg_path_to_check, F_OK | R_OK ) == 0) {
+		cfile.file = xdg_path_to_check;
+	} else {
 		nfsnprintf( path, sizeof(path), "%s/." EXE "rc", Home );
 		cfile.file = path;
-	} else
-		cfile.file = where;
+	}
 
 	info( "Reading configuration file %s\n", cfile.file );
 
